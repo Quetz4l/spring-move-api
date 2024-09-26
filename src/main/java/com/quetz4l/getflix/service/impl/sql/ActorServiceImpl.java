@@ -1,35 +1,45 @@
 package com.quetz4l.getflix.service.impl.sql;
 
 import com.quetz4l.getflix.model.Actor;
+import com.quetz4l.getflix.repository.IActorRepository;
 import com.quetz4l.getflix.service.IActorService;
+import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
+@Service
+@AllArgsConstructor
+@Primary
 public class ActorServiceImpl implements IActorService {
-    private IActorService actorService;
+    private IActorRepository repository;
 
     @Override
     public List<Actor> findAllActors() {
-        return actorService.findAllActors();
+        return repository.findAll();
     }
 
     @Override
-    public Actor findActorById(Long id) {
-        return actorService.findActorById(id);
+    public Optional<Actor> findActorById(Long id) {
+        return repository.findById(id);
     }
 
     @Override
-    public Actor createActor(Actor actor) {
-        return actorService.createActor(actor);
+    public Optional<Actor> createActor(Actor actor) {
+        return Optional.of(repository.save(actor));
     }
 
     @Override
-    public Actor updateActor(Actor actor) {
-        return actorService.updateActor(actor);
+    public Optional<Actor> updateActor(Actor actor) {
+        return Optional.of(repository.save(actor));
     }
 
     @Override
     public Boolean deleteActorById(Long id) {
-        return actorService.deleteActorById(id);
+        if (findActorById(id).isEmpty()) return false;
+        repository.deleteById(id);
+        return findActorById(id).isEmpty();
     }
 }

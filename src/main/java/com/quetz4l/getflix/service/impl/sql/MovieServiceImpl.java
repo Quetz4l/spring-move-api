@@ -6,9 +6,9 @@ import com.quetz4l.getflix.service.IMovieService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -22,24 +22,24 @@ public class MovieServiceImpl implements IMovieService {
     }
 
     @Override
-    public Movie findMovieById(Long id) {
-        return repository.findById(id).orElse(null);
+    public Optional<Movie> findMovieById(Long id) {
+        return repository.findById(id);
     }
 
     @Override
-    public Movie createMovie(Movie movie) {
-        return repository.save(movie);
+    public Optional<Movie> createMovie(Movie movie) {
+        return Optional.of(repository.save(movie));
     }
 
     @Override
-    public Movie updateMovie(Movie movie) {
-        return repository.save(movie);
+    public Optional<Movie> updateMovie(Movie movie) {
+        return Optional.of(repository.save(movie));
     }
 
     @Override
     public Boolean deleteMovieById(Long id) {
-        if (findMovieById(id) == null) return false;
+        if (findMovieById(id).isEmpty()) return false;
         repository.deleteById(id);
-        return findMovieById(id) == null;
+        return findMovieById(id).isEmpty();
     }
 }
