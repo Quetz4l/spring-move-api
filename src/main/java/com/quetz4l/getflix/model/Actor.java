@@ -29,6 +29,4 @@ public class Actor {
 
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Movie> movies;
-
-
 }

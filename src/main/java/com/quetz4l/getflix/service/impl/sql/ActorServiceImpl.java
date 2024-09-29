@@ -3,6 +3,7 @@ package com.quetz4l.getflix.service.impl.sql;
 import com.quetz4l.getflix.model.Actor;
 import com.quetz4l.getflix.repository.IActorRepository;
 import com.quetz4l.getflix.service.IActorService;
+import com.quetz4l.getflix.service.Text;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class ActorServiceImpl implements IActorService {
 
     @Override
     public Optional<Actor> createActor(Actor actor) {
+        actor.setName(Text.textFormater(actor.getName()));
         return Optional.of(repository.save(actor));
     }
 

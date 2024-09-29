@@ -1,7 +1,9 @@
 package com.quetz4l.getflix.controller;
 
 import com.quetz4l.getflix.model.Genre;
+import com.quetz4l.getflix.model.dto.GenreRequestDTO;
 import com.quetz4l.getflix.service.IGenreService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +23,8 @@ public class GenreController {
     private IGenreService genreService;
 
     @PostMapping
-    public Genre createGenre(@RequestBody Genre genre) {
-        return genreService.createGenre(genre).orElse(null);
+    public Genre createGenre(@Valid @RequestBody GenreRequestDTO genreRequestDTO) {
+        return genreService.createGenre(genreRequestDTO).orElse(null);
     }
 
     @GetMapping

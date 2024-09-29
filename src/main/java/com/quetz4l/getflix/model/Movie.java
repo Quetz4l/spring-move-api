@@ -1,18 +1,18 @@
 package com.quetz4l.getflix.model;
 
+import com.quetz4l.getflix.service.Text;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,17 +29,29 @@ public class Movie {
     private String title;
 
     @Column(nullable = false)
-    private LocalDate releaseYear;
+    private short releaseYear;
 
     @Column(nullable = false)
     private int duration;
 
+    @ManyToMany
+    @JoinTable(
+            name = "movie_actor",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id")
+    )
+    private List<Genre> genres = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "genre", referencedColumnName = "id")
-    private Genre genre;
-
-    @ManyToMany(mappedBy = "movies")
+    @ManyToMany
+    @JoinTable(
+            name = "movie_genre",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
     private List<Actor> actors = new ArrayList<>();
 
+
+    public void setTitle(String title) {
+        this.title = Text.textFormater(title);
+    }
 }
