@@ -2,13 +2,11 @@ package com.quetz4l.getflix.controller;
 
 import com.quetz4l.getflix.model.Movie;
 import com.quetz4l.getflix.model.dto.MovieRequestDTO;
-import com.quetz4l.getflix.model.dto.MovieRequestFilterDTO;
 import com.quetz4l.getflix.service.IMovieService;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,8 +28,8 @@ public class MovieController {
     }
 
     @GetMapping
-    public List<Movie> findAllMovies(@ModelAttribute MovieRequestFilterDTO movieRequestFilterDTO) {
-        return service.findAllMovies(movieRequestFilterDTO);
+    public List<Movie> findAllMovies() {
+        return service.findAllMovies();
     }
 
     @GetMapping("/{id}")

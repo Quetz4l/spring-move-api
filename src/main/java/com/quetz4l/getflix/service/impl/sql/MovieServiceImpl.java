@@ -4,7 +4,6 @@ import com.quetz4l.getflix.model.Actor;
 import com.quetz4l.getflix.model.Genre;
 import com.quetz4l.getflix.model.Movie;
 import com.quetz4l.getflix.model.dto.MovieRequestDTO;
-import com.quetz4l.getflix.model.dto.MovieRequestFilterDTO;
 import com.quetz4l.getflix.repository.IActorRepository;
 import com.quetz4l.getflix.repository.IGenreRepository;
 import com.quetz4l.getflix.repository.IMovieRepository;
@@ -26,8 +25,8 @@ public class MovieServiceImpl implements IMovieService {
     private IActorRepository actorRepository;
 
     @Override
-    public List<Movie> findAllMovies(MovieRequestFilterDTO movieRequestFilterDTO) {
-        return findAllMoviesHelper(movieRequestFilterDTO);
+    public List<Movie> findAllMovies() {
+        return movieRepository.findAll();
     }
 
     @Override
@@ -80,16 +79,6 @@ public class MovieServiceImpl implements IMovieService {
         }
 
         return movie;
-    }
-
-    private List<Movie> findAllMoviesHelper(MovieRequestFilterDTO filterDTO) {
-//        if (filterDTO.getGenreId() > 0 && filterDTO.getReleaseYear() > 0 && filterDTO.getActorId() > 0) {
-//            System.out.println("movieRequestFilterDTO 1");
-//            return repository.getMovieByGenreId(filterDTO.getGenreId());
-//        } else {
-        System.out.println("movieRequestFilterDTO 2");
-        return movieRepository.findAll();
-//        }
     }
 
 }
