@@ -1,6 +1,6 @@
 package com.quetz4l.getflix.model;
 
-import com.quetz4l.getflix.service.Text;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,29 +9,38 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "genre")
 @NoArgsConstructor
 public class Genre {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(unique = true, nullable = false)
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Movie> movies = new ArrayList<>();
 
-    public void setName(String name) {
-        this.name = Text.textFormater(name);
+    public void addMovie(Movie movie) {
+        this.movies.add(movie);
+        movie.getGenres().add(this);
     }
+
+    public void clearMovies() {
+        this.movies.forEach(movie -> movie.getGenres().remove(this));
+        this.movies.clear();
+    }
+
 }
 

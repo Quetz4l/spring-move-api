@@ -1,0 +1,51 @@
+# Getflix
+
+Getflix is a movie management application built using Java, Spring Boot, and Hibernate.
+
+## Features
+
+- Manage movies
+- Manage actors
+- Manage genres
+
+## Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- You have installed the 23 version of Java.
+- You have installed the latest version of Gradle.
+- You have a SQLite database installed.
+
+## Installation
+
+1. Clone the repository:
+
+   ```shell
+   git clone https://gitea.kood.tech/Quetz4l/kmdb
+   ```
+
+
+2. Build the project with Gradle:
+   ```shell
+   gradlew build
+   ```
+
+3. Run the application:
+   ```shell
+   gradlew GetflixApplication
+   ```
+   
+## Usage
+Once the application is running, you can use the following endpoints:
+
+* To get all movies: `GET /movies`
+* To get a movie by id: `GET /movies/{id}`
+* To create a movie: `POST /movies`
+* To update a movie by id: `PUT /movies/{id}`
+* To delete a movie by id: `DELETE /movies/{id}`
+
+## Contributing
+Contributions are always welcome! Please feel free to open an issue or submit a pull request.
+
+## License
+Distributed under the MIT License.

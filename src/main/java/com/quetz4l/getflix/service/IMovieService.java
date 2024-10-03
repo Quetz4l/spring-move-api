@@ -1,22 +1,33 @@
 package com.quetz4l.getflix.service;
 
+import com.quetz4l.getflix.dto.request.MovieRequestDTO;
+import com.quetz4l.getflix.dto.request.MovieRequestFilterDTO;
+import com.quetz4l.getflix.exceptions.custom.DeletionIsImpossible;
+import com.quetz4l.getflix.exceptions.custom.ResourceAlreadyExists;
+import com.quetz4l.getflix.exceptions.custom.ResourceNotFound;
+import com.quetz4l.getflix.exceptions.custom.UnknownException;
+import com.quetz4l.getflix.model.Actor;
 import com.quetz4l.getflix.model.Movie;
-import com.quetz4l.getflix.model.dto.MovieRequestDTO;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public interface IMovieService {
-    List<Movie> findAllMovies();
+    //CRUD
+    List<Movie> findAllMovies(MovieRequestFilterDTO filter, Pageable pageable);
 
-    Optional<Movie> findMovieById(Long id);
+    Movie findMovieById(Long id) throws ResourceNotFound;
 
-    Optional<Movie> createMovie(MovieRequestDTO movie);
+    Movie createMovie(MovieRequestDTO movie) throws ResourceAlreadyExists, UnknownException;
 
-    Optional<Movie> updateMovie(Long id, MovieRequestDTO movieRequestDT);
+    Movie updateMovie(Long id, MovieRequestDTO movieRequestDT) throws ResourceNotFound, UnknownException;
 
-    Boolean deleteMovieById(Long id);
+    void deleteMovieById(Long id, boolean forceDeletion) throws ResourceNotFound, DeletionIsImpossible, UnknownException;
 
+    //others
+    List<Actor> findActorsByMovieId(Long id);
+
+    List<Movie> findMoviesByTitle(String title);
 }

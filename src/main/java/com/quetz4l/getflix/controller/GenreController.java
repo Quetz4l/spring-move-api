@@ -1,10 +1,23 @@
 package com.quetz4l.getflix.controller;
 
-import com.quetz4l.getflix.model.Genre;
-import com.quetz4l.getflix.model.dto.GenreRequestDTO;
+import com.quetz4l.getflix.dto.request.GenreRequestDTO;
+import com.quetz4l.getflix.dto.response.GenreResponseDTO;
+import com.quetz4l.getflix.dto.response.SuccessfulResponse;
+import com.quetz4l.getflix.exceptions.custom.DeletionIsImpossible;
+import com.quetz4l.getflix.exceptions.custom.NotBooleanType;
+import com.quetz4l.getflix.exceptions.custom.ResourceAlreadyExists;
+import com.quetz4l.getflix.exceptions.custom.ResourceNotFound;
+import com.quetz4l.getflix.exceptions.custom.UnknownException;
 import com.quetz4l.getflix.service.IGenreService;
+import com.quetz4l.getflix.util.Bool;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -12,39 +25,47 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
+@Validated
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/genre")
+@RequestMapping("/api/genres")
 public class GenreController {
-    private IGenreService genreService;
-
-    @PostMapping
-    public Genre createGenre(@Valid @RequestBody GenreRequestDTO genreRequestDTO) {
-        return genreService.createGenre(genreRequestDTO).orElse(null);
-    }
+    private final IGenreService service;
 
     @GetMapping
-    public List<Genre> findAllGenres() {
-        return genreService.findAllGenres();
+    public SuccessfulResponse findAllGenres(
+            @RequestParam(value = "page", defaultValue = "1") @Min(value = 1, message = "Minimum page value is 1") short page,
+            @RequestParam(value = "size", defaultValue = "10") @Min(value = 1, message = "Minimum size value is 1") @Max(value = 100, message = "Maximum size value is 100") short size
+    ) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        return new SuccessfulResponse(service.findAllGenres(pageable).stream().map(GenreResponseDTO::new).toList());
     }
 
     @GetMapping("/{id}")
-    public Genre findGenreById(@PathVariable Long id) {
-        return genreService.findGenreById(id).orElse(null);
+    public SuccessfulResponse findGenreById(@PathVariable Long id) throws ResourceNotFound {
+        return new SuccessfulResponse(service.findGenreById(id));
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public SuccessfulResponse createGenre(@Valid @RequestBody GenreRequestDTO genreRequestDTO) throws ResourceAlreadyExists, UnknownException {
+        return new SuccessfulResponse(service.createGenre(genreRequestDTO));
     }
 
     @PatchMapping("/{id}")
-    public Genre updateGenre(@RequestBody Genre genre) {
-        return genreService.updateGenre(genre).orElse(null);
+    public SuccessfulResponse updateGenre(@PathVariable Long id, @RequestBody GenreRequestDTO genreRequestDTO) throws ResourceNotFound, UnknownException {
+        return new SuccessfulResponse(new GenreResponseDTO(service.updateGenre(id, genreRequestDTO)));
     }
 
     @DeleteMapping("/{id}")
-    public Boolean deleteGenreById(@PathVariable Long id) {
-        return genreService.deleteGenreById(id);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteGenreById(@PathVariable Long id, @RequestParam(defaultValue = "false") String force) throws ResourceNotFound, UnknownException, DeletionIsImpossible, NotBooleanType {
+        boolean forceDeletion = Bool.parseBoolean(force);
+        service.deleteGenreById(id, forceDeletion);
     }
 
 
