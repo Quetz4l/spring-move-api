@@ -19,12 +19,10 @@ Before you begin, ensure you have met the following requirements:
 ## Installation
 
 1. Clone the repository:
-
    ```shell
    git clone https://gitea.kood.tech/Quetz4l/kmdb
    cd kmdb
    ```
-
 
 2. Build the project with Gradle:
    ```shell
@@ -33,7 +31,7 @@ Before you begin, ensure you have met the following requirements:
 
 3. Run the application:
    ```shell
-   gradlew GetflixApplication
+   java -jar build\libs\getflix-0.1-SNAPSHOT.jar
    ```
 
 ## Usage
