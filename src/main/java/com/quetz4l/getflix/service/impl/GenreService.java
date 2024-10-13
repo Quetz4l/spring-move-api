@@ -9,11 +9,17 @@ import com.quetz4l.getflix.model.Genre;
 import com.quetz4l.getflix.repository.GenreRepository;
 import com.quetz4l.getflix.repository.MovieRepository;
 import com.quetz4l.getflix.service.IGenreService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,13 +27,29 @@ import java.util.Optional;
 @AllArgsConstructor
 @Primary
 public class GenreService implements IGenreService {
+    private final EntityManager entityManager;
     private final GenreRepository genreRepository;
     private final MovieRepository movieRepository;
 
     //CRUD
     @Override
-    public List<Genre> findAllGenres(Pageable pageable) {
-        return genreRepository.findAll(pageable).getContent();
+    public List<Genre> findAllGenres(Pageable pageable, String name) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Genre> query = cb.createQuery(Genre.class);
+        Root<Genre> genre = query.from(Genre.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (name != null) {
+            predicates.add(cb.like(cb.lower(genre.get("name")), "%" + name.toLowerCase() + "%"));
+        }
+
+        query.where(predicates.toArray(new Predicate[0]));
+
+        return entityManager.createQuery(query)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
     }
 
     @Override

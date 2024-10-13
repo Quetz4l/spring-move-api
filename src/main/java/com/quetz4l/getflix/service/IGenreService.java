@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 public interface IGenreService {
     //CRUD
-    List<Genre> findAllGenres(Pageable pageable);
+    List<Genre> findAllGenres(Pageable pageable, String name);
 
     Genre findGenreById(Long id) throws ResourceNotFound;
 

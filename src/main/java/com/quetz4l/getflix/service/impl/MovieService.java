@@ -49,10 +49,6 @@ public class MovieService implements IMovieService {
             predicates.add(cb.equal(movie.get("releaseYear"), filter.getYear()));
         }
 
-        if (filter.getTitle() != null) {
-            predicates.add(cb.like(movie.get("title"), "%" + filter.getTitle() + "%"));
-        }
-
         if (filter.getGenre() != 0) {
             Join<Movie, Genre> genreJoin = movie.join("genres");
             predicates.add(cb.equal(genreJoin.get("id"), filter.getGenre()));
@@ -132,18 +128,31 @@ public class MovieService implements IMovieService {
 
     //others...
     @Override
-    public List<Actor> findActorsByMovieId(Long id) {
-        Optional<Movie> movie = movieRepository.findById(id);
-        if (movie.isPresent()) {
-            return movie.get().getActors();
-        }
+    public List<Actor> findActorsByMovieId(Long id) throws ResourceNotFound {
+        return findMovieById(id).getActors();
+    }
 
-        return new ArrayList<>();
+    @Override
+    public List<Genre> findGenresByMovieId(Long id) throws ResourceNotFound {
+        return findMovieById(id).getGenres();
     }
 
     @Override
     public List<Movie> findMoviesByTitle(String title) {
         return movieRepository.findAllByTitle(title);
+    }
+
+    @Override
+    public List<Movie> findActorsByMovieTitle(String title) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Movie> query = cb.createQuery(Movie.class);
+        Root<Movie> movie = query.from(Movie.class);
+        List<Predicate> predicates = new ArrayList<>();
+
+        predicates.add(cb.like(movie.get("title"), "%" + title + "%"));
+        query.where(predicates.toArray(new Predicate[0]));
+
+        return entityManager.createQuery(query).getResultList();
     }
 
 

@@ -3,6 +3,7 @@ package com.quetz4l.getflix.controller;
 import com.quetz4l.getflix.dto.request.MovieRequestDTO;
 import com.quetz4l.getflix.dto.request.MovieRequestFilterDTO;
 import com.quetz4l.getflix.dto.response.ActorResponseDTO;
+import com.quetz4l.getflix.dto.response.GenreResponseDTO;
 import com.quetz4l.getflix.dto.response.MovieResponseDTO;
 import com.quetz4l.getflix.dto.response.SuccessfulResponse;
 import com.quetz4l.getflix.exceptions.custom.DeletionIsImpossible;
@@ -15,6 +16,9 @@ import com.quetz4l.getflix.util.Bool;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -79,10 +83,24 @@ public class MovieController {
     }
     //others...
 
+    @GetMapping("/search")
+    public SuccessfulResponse findActorsByMovieId(
+            @NotNull
+            @NotBlank
+            @Size(min = 2, max = 100, message = "Title must be between 2 and 100 characters")
+            String title
+    ) {
+        return new SuccessfulResponse(service.findActorsByMovieTitle(title).stream().map(MovieResponseDTO::new).toList());
+    }
 
     @GetMapping("/{id}/actors")
-    public SuccessfulResponse findActorsByMovieId(@PathVariable @Min(value = 1, message = GREATER_ID) Long id) {
+    public SuccessfulResponse findActorsByMovieId(@PathVariable @Min(value = 1, message = GREATER_ID) Long id) throws ResourceNotFound {
         return new SuccessfulResponse(service.findActorsByMovieId(id).stream().map(ActorResponseDTO::new).toList());
+    }
+
+    @GetMapping("/{id}/genres")
+    public SuccessfulResponse findGenresByMovieId(@PathVariable @Min(value = 1, message = GREATER_ID) Long id) throws ResourceNotFound {
+        return new SuccessfulResponse(service.findGenresByMovieId(id).stream().map(GenreResponseDTO::new).toList());
     }
 
 }

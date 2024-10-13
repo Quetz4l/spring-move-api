@@ -41,7 +41,7 @@ public class ActorService implements IActorService {
         List<Predicate> predicates = new ArrayList<>();
 
         if (name != null && !name.equals("null")) {
-            predicates.add(cb.equal(actor.get("name"), name));
+            predicates.add(cb.like(cb.lower(actor.get("name")), "%" + name.toLowerCase() + "%"));
         }
 
         query.where(predicates.toArray(new Predicate[0]));

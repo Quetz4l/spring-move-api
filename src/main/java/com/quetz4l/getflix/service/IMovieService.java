@@ -7,6 +7,7 @@ import com.quetz4l.getflix.exceptions.custom.ResourceAlreadyExists;
 import com.quetz4l.getflix.exceptions.custom.ResourceNotFound;
 import com.quetz4l.getflix.exceptions.custom.UnknownException;
 import com.quetz4l.getflix.model.Actor;
+import com.quetz4l.getflix.model.Genre;
 import com.quetz4l.getflix.model.Movie;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,12 @@ public interface IMovieService {
     void deleteMovieById(Long id, boolean forceDeletion) throws ResourceNotFound, DeletionIsImpossible, UnknownException;
 
     //others
-    List<Actor> findActorsByMovieId(Long id);
+    List<Actor> findActorsByMovieId(Long id) throws ResourceNotFound;
+
+    List<Genre> findGenresByMovieId(Long id) throws ResourceNotFound;
 
     List<Movie> findMoviesByTitle(String title);
+
+    List<Movie> findActorsByMovieTitle(String title);
+
 }
