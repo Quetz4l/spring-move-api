@@ -31,7 +31,7 @@ Before you begin, ensure you have met the following requirements:
 
 3. Run the application:
    ```shell
-   java -jar build\libs\getflix-0.1-SNAPSHOT.jar
+   java -jar build\libs\getflix-1.1.jar
    ```
 
 ## Usage
