@@ -11,8 +11,6 @@ import com.quetz4l.getflix.exceptions.custom.UnknownException;
 import com.quetz4l.getflix.model.Actor;
 import com.quetz4l.getflix.service.IActorService;
 import com.quetz4l.getflix.util.Bool;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -39,13 +37,11 @@ import static com.quetz4l.getflix.validation.IdValidator.GREATER_ID;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/actors")
-@Api("Actors API")
 public class ActorController {
     private final IActorService service;
 
     //CRUD
     @GetMapping
-    @ApiOperation("Get all actors")
     public SuccessfulResponse getAllActors(
             @RequestParam(value = "page", defaultValue = "1") @Min(value = 1, message = "Minimum page value is 1") short page,
             @RequestParam(value = "size", defaultValue = "10") @Min(value = 1, message = "Minimum size value is 1")
@@ -58,7 +54,6 @@ public class ActorController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation("Get actor by id")
     public SuccessfulResponse findActorById(@PathVariable @Min(value = 1, message = GREATER_ID) Long id) {
         Actor actorById = null;
         try {
@@ -71,21 +66,18 @@ public class ActorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation("Create actor")
     public SuccessfulResponse createActor(@Valid @RequestBody ActorRequestDTO actorDTO) throws ResourceAlreadyExists, UnknownException {
         ActorResponseDTO actorResponseDTO = new ActorResponseDTO(service.createActor(actorDTO));
         return new SuccessfulResponse(actorResponseDTO);
     }
 
     @PatchMapping("/{id}")
-    @ApiOperation("Update actor")
     public SuccessfulResponse updateActor(@PathVariable @Min(value = 1, message = GREATER_ID) Long id, @Valid @RequestBody ActorRequestDTO actorDTO) throws ResourceNotFound, UnknownException {
         return new SuccessfulResponse(service.updateActor(id, actorDTO));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ApiOperation("Delete actor")
     public void deleteActorById(@PathVariable @Min(value = 1, message = GREATER_ID) Long id, @RequestParam(defaultValue = "false") String force) throws ResourceNotFound, UnknownException, DeletionIsImpossible, NotBooleanType {
         boolean forceDeletion = Bool.parseBoolean(force);
         service.deleteActorById(id, forceDeletion);
