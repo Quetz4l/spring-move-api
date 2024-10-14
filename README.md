@@ -36,7 +36,8 @@ Before you begin, ensure you have met the following requirements:
 
 ## Usage
 
-Once the application is running, you can use the following endpoints:
+Once the application is running, you can see the entire API path from Swagger UI `http://localhost:8080/swagger-ui/index.html` or
+use the following endpoints:
 
 <details><summary> Movies</summary>
 
@@ -94,6 +95,7 @@ Once the application is running, you can use the following endpoints:
 * Case-insensitive and partial match search for movie titles is implemented.
 * Proper error handling and input validation for invalid pagination parameters is implemented.
 * Basic tests for RestFul API
+* Swagger
 
 ## Contributing
 
