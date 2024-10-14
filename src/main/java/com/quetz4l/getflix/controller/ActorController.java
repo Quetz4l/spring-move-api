@@ -84,9 +84,8 @@ public class ActorController {
     }
 
     //others...
-
-//    @GetMapping("{name}")
-//    public SuccessfulResponse getAllActorsByName(@PathVariable String name) {
-//        return new SuccessfulResponse(service.findAllByName(name).stream().map(ActorResponseDTO::new).toList());
-//    }
+    @GetMapping("{name}")
+    public SuccessfulResponse getAllActorsByName(@PathVariable String name) {
+        return new SuccessfulResponse(service.findAllByName(name).stream().map(ActorResponseDTO::new).toList());
+    }
 }
