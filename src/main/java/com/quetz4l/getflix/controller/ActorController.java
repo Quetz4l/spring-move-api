@@ -54,14 +54,8 @@ public class ActorController {
     }
 
     @GetMapping("/{id}")
-    public SuccessfulResponse findActorById(@PathVariable @Min(value = 1, message = GREATER_ID) Long id) {
-        Actor actorById = null;
-        try {
-            actorById = service.findActorById(id);
-        } catch (ResourceNotFound e) {
-            throw new RuntimeException(e);
-        }
-        return new SuccessfulResponse(actorById);
+    public SuccessfulResponse findActorById(@PathVariable @Min(value = 1, message = GREATER_ID) Long id) throws ResourceNotFound {
+        return new SuccessfulResponse(service.findActorById(id));
     }
 
     @PostMapping
