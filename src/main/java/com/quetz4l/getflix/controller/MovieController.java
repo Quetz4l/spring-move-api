@@ -13,6 +13,7 @@ import com.quetz4l.getflix.exceptions.custom.ResourceNotFound;
 import com.quetz4l.getflix.exceptions.custom.UnknownException;
 import com.quetz4l.getflix.service.IMovieService;
 import com.quetz4l.getflix.util.Bool;
+import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -47,7 +48,7 @@ public class MovieController {
 
     @GetMapping
     public SuccessfulResponse findAllMovies(
-            @ModelAttribute MovieRequestFilterDTO filter,
+            @Nullable @ModelAttribute MovieRequestFilterDTO filter,
             @RequestParam(value = "page", defaultValue = "1") @Min(value = 1, message = "Minimum page value is 1") short page,
             @RequestParam(value = "size", defaultValue = "10") @Min(value = 1, message = "Minimum size value is 1")
             @Max(value = 100, message = "Maximum size value is 100") short size

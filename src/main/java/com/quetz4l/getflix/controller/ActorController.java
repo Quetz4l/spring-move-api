@@ -53,9 +53,10 @@ public class ActorController {
         return new SuccessfulResponse(service.findAllActors(pageable, name).stream().map(ActorResponseDTO::new).toList());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public SuccessfulResponse findActorById(@PathVariable @Min(value = 1, message = GREATER_ID) Long id) throws ResourceNotFound {
-        return new SuccessfulResponse(service.findActorById(id));
+        Actor actorById = service.findActorById(id);
+        return new SuccessfulResponse(actorById);
     }
 
     @PostMapping
@@ -77,9 +78,4 @@ public class ActorController {
         service.deleteActorById(id, forceDeletion);
     }
 
-    //others...
-    @GetMapping("{name}")
-    public SuccessfulResponse getAllActorsByName(@PathVariable String name) {
-        return new SuccessfulResponse(service.findAllByName(name).stream().map(ActorResponseDTO::new).toList());
-    }
 }
