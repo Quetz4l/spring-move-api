@@ -11,6 +11,7 @@ import com.quetz4l.getflix.exceptions.custom.UnknownException;
 import com.quetz4l.getflix.model.Actor;
 import com.quetz4l.getflix.service.IActorService;
 import com.quetz4l.getflix.util.Bool;
+import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -47,7 +48,7 @@ public class ActorController {
             @RequestParam(value = "size", defaultValue = "10") @Min(value = 1, message = "Minimum size value is 1")
             @Max(value = 100, message = "Maximum size value is 100") short size,
             @RequestParam(value = "name", defaultValue = "null")
-            @Size(min = 3, max = 30, message = "Name must be between 3 and 30 characters") String name
+            @Nullable @Size(min = 3, max = 30, message = "Name must be between 3 and 30 characters") String name
     ) {
         Pageable pageable = PageRequest.of(page - 1, size);
         return new SuccessfulResponse(service.findAllActors(pageable, name).stream().map(ActorResponseDTO::new).toList());

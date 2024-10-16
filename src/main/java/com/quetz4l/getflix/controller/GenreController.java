@@ -13,6 +13,7 @@ import com.quetz4l.getflix.util.Bool;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -42,7 +43,7 @@ public class GenreController {
             @RequestParam(value = "page", defaultValue = "1") @Min(value = 1, message = "Minimum page value is 1") short page,
             @RequestParam(value = "size", defaultValue = "10") @Min(value = 1, message = "Minimum size value is 1")
             @Max(value = 100, message = "Maximum size value is 100") short size,
-            @Size(min = 2, max = 30, message = "Name must be between 2 and 30 characters") String name
+            @NotNull @Size(min = 2, max = 30, message = "Name must be between 2 and 30 characters") String name
     ) {
         Pageable pageable = PageRequest.of(page - 1, size);
         return new SuccessfulResponse(service.findAllGenres(pageable, name).stream().map(GenreResponseDTO::new).toList());
