@@ -12,9 +12,9 @@ Getflix is a movie management application built using Java, Spring Boot, and Hib
 
 Before you begin, ensure you have met the following requirements:
 
-- You have installed the 23 version of Java.
-- You have installed the latest version of Gradle.
-- You have a SQLite database installed.
+- 23 Java
+- Gradle
+- SQLite
 
 ## Installation
 
@@ -41,49 +41,49 @@ use the following endpoints:
 
 <details><summary> Movies</summary>
 
-* To get all movies: `GET /movies`
-* To get a movie by id: `GET /movies/{id}`
-* To create a movie: `POST /movies`
-* To update a movie by id: `PATCH /movies/{id}`
-* To delete a movie by id, (with `force=true` parameter to force deletion): `DELETE /movies/{id}`
+* `GET /movies` - To get all movies
+* `GET /movies/{id}` - To get a movie by id
+* `POST /movies` - To create a movie
+* `PATCH /movies/{id}` - To update a movie by id
+* `DELETE /movies/{id}` - To delete a movie by id, (with `force=true` parameter to force deletion): 
 
 #### Filters (can work with combinations)
 
-* Retrieve movies filtered by genre, can work with incomplete title names: `GET /api/movies/search?title={Title name}`
-* Retrieve movies filtered by genre: `GET /api/movies?genre={genreId}`
-* Retrieve movies filtered by release year: `GET /api/movies?year={releaseYear}`
-* Retrieve movies that the actor with the given id has: `GET /api/movies?actor={Actor.id}`
+* `GET /api/movies/search?title={Title name}` - Retrieve movies filtered by genre, can work with incomplete title names
+* `GET /api/movies?genre={genreId}` - Retrieve movies filtered by genre
+* `GET /api/movies?year={releaseYear}` - Retrieve movies filtered by release year
+* `GET /api/movies?actor={Actor.id}` - Retrieve movies that the actor with the given id has
 
 </details>
 
 <details><summary> Actors </summary>
 
-* To get all actors: `GET /actors`
-* To get an actor by id: `GET /actors/{id}`
-* To create an actor: `POST /actors`
-* To update an actor by id: `PATCH /actors/{id}`
-* To delete an actor by id, (with `force=true` parameter to force deletion): `DELETE /actors/{id}`
+* `GET /actors` - To get all actors
+* `GET /actors/{id}` - To get an actor by id
+* `POST /actors` - To create an actor
+* `PATCH /actors/{id}` - To update an actor by id
+* `DELETE /actors/{id}` - To delete an actor by id, (with `force=true` parameter to force deletion)
 
 ### Filters
 
-* Retrieve all actors starring in a movie: `GET /api/movies/{movieId}/actors`
-* Retrieve actors filtered by name, can work with incomplete names:: `GET /api/actors?name={name}`
+* `GET /api/movies/{movieId}/actors` - Retrieve all actors starring in a movie
+* `GET /api/actors?name={name}`- Retrieve actors filtered by name, can work with incomplete names 
 
 </details>
 
 
 <details><summary> Genres </summary>
 
-* To get all genres: `GET /genres`
-* To get a genre by id: `GET /genres/{id}`
-* To create a genre: `POST /genres`
-* To update a genre by id: `PATCH /genres/{id}`
-* To delete a genre by id (with `force=true` parameter to force deletion): `DELETE /genres/{id}`
+* `GET /genres` - To get all genres
+* `GET /genres/{id}` - To get a genre by id
+* `POST /genres`- To create a genre
+* `PATCH /genres/{id}`- To update a genre by id
+* `DELETE /genres/{id}`- To delete a genre by id (with `force=true` parameter to force deletion)
 
 ### Filters
 
-* Retrieve all genres starring in a movie: `GET /api/movies/{movieId}/genres`
-* Retrieve genres filtered by name, can work with incomplete names: `GET /api/genres?name={name}`
+* `GET /api/movies/{movieId}/genres`- Retrieve all genres starring in a movie
+* `GET /api/genres?name={name}`- Retrieve genres filtered by name, can work with incomplete names
 
 </details>
 
